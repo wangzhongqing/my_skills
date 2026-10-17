@@ -1,0 +1,4 @@
+interface:
+  display_name: "ELI5++"
+  short_description: "用图解、实例、边界和有意义动效，产出经过校验的自包含 HTML 解释页"
+  default_prompt: "使用 $eli5-plus-plus 解释一个复杂主题，帮助零基础读者建立准确的心智模型，并输出经过静态校验的独立 HTML 页面。"

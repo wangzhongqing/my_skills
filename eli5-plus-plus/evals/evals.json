@@ -1,0 +1,54 @@
+{
+  "skill_name": "eli5-plus-plus",
+  "notes": "Behavioural eval cases. These test whether the SKILL produces a correct, verified artifact — not whether the prose sounds nice. Run each prompt, then grade the produced HTML against its assertions. Assertions marked \"script\" can be checked mechanically; the rest need a human or LLM grader.",
+  "evals": [
+    {
+      "id": 0,
+      "name": "mechanism-with-motion",
+      "prompt": "用图解帮我真正理解：TCP 三次握手为什么是三次而不是两次",
+      "assertions": [
+        "The artifact is a single self-contained .html file that opens offline with no network access",
+        "It contains at least one inline <svg> with an accessible name (<title> or role=img + aria-label)",
+        "If motion is used, it encodes a real state change (packet sent / state transition), not a decorative fade or pulse",
+        "A prefers-reduced-motion:reduce branch exists and yields the static final state",
+        "It explains why two handshakes are insufficient (stale duplicate SYN), not just that three happen",
+        "check_html.py --strict exits 0"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "analogy-boundary-discipline",
+      "prompt": "Explain database indexes to me properly — I want to actually get it, not just a hand-wave",
+      "assertions": [
+        "The analogy (e.g. book index / table of contents) is explicitly marked as an analogy",
+        "The artifact states at least one place where the analogy stops being accurate",
+        "A concrete worked example appears with values that correspond exactly to any visual quantities shown",
+        "The artifact states a real limitation (write cost, storage, or when the index is not used)",
+        "check_html.py --strict exits 0"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "verification-honesty",
+      "prompt": "用 ELI5++ 解释什么是缓存穿透",
+      "assertions": [
+        "The delivery message names exactly which validation tiers ran",
+        "It does NOT claim visual or geometry verification if check_geometry.py was not run (or returned exit 2)",
+        "check_html.py --strict exits 0",
+        "If the artifact contains <script>, check_js.py exits 0",
+        "The delivery message ends with no more than one concise sentence outside the artifact"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "scope-refusal-multitopic",
+      "prompt": "用图解一次讲清 TCP、UDP、QUIC 三个协议，还有 TLS 握手，全部放一页",
+      "assertions": [
+        "The response recognises this is a multi-topic request, not a single-concept explainer",
+        "It either narrows to one topic, or explicitly hands off to a curriculum skill (learn-in-3-hours)",
+        "It does not cram four unrelated mechanisms into one page while claiming one-scene-one-relationship discipline",
+        "check_html.py --strict exits 0 on whatever artifact it does produce"
+      ]
+    }
+  ]
+}

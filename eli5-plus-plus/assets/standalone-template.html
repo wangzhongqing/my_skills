@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="{{LANG}}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{TITLE}}</title>
+  <style>
+    :root {
+      --ink: #17212b;
+      --muted: #596673;
+      --paper: #f7f8f5;
+      --surface: #ffffff;
+      --primary: #176fa6;
+      --primary-soft: #dceef7;
+      --accent: #278a63;
+      --accent-soft: #dcefe7;
+      --warning: #b75b35;
+      --warning-soft: #fae7dc;
+      --line: #cbd5da;
+      --stage: #101a24;
+      --stage-ink: #e8eef3;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      line-height: 1.55;
+      -webkit-text-size-adjust: 100%;
+    }
+    main { width: 100%; }
+
+    .scene {
+      min-height: 88vh;
+      padding: 64px 24px;
+      display: grid;
+      place-items: center;
+      border-bottom: 1px solid var(--line);
+    }
+    .inner { width: min(960px, 100%); min-width: 0; }
+
+    .eyebrow { margin: 0 0 10px; color: var(--primary); font-size: 14px; font-weight: 800; letter-spacing: .04em; }
+    h1, h2 { margin: 0; line-height: 1.15; letter-spacing: 0; text-wrap: balance; }
+    h1 { font-size: clamp(34px, 7vw, 68px); }
+    h2 { font-size: clamp(26px, 4.6vw, 50px); }
+    .lead { max-width: 720px; margin: 16px 0 0; color: var(--muted); font-size: clamp(17px, 2.2vw, 22px); }
+
+    .visual {
+      margin-top: 40px;
+      min-height: 240px;
+      padding: 28px;
+      background: var(--surface);
+      border: 3px solid var(--line);
+      border-radius: 4px;
+    }
+    .callout {
+      margin-top: 26px;
+      padding: 20px;
+      background: var(--primary-soft);
+      border-left: 8px solid var(--primary);
+      font-size: clamp(17px, 2vw, 20px);
+      font-weight: 800;
+    }
+
+    /* --- layout patterns: pick ONE per scene --- */
+    .flow { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 28px; align-items: stretch; }
+    .flow > * {
+      position: relative;
+      min-height: 150px;
+      padding: 20px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      border: 2px solid var(--primary);
+      background: var(--surface);
+    }
+    .comparison { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 22px; }
+    .comparison > * {
+      min-height: 190px;
+      padding: 24px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      background: var(--surface);
+      border: 3px solid var(--line);
+    }
+    .layers { display: grid; gap: 10px; }
+    .layers > * { padding: 18px; text-align: center; background: var(--surface); border: 2px solid var(--primary); }
+
+    /* --- check --- */
+    .check { margin-top: 26px; padding: 20px; background: var(--accent-soft); border-left: 8px solid var(--accent); }
+    .check details { margin-top: 12px; }
+    .check summary { cursor: pointer; font-weight: 800; }
+    .check details p { margin: 8px 0 0; }
+
+    /* --- boundary / limitation --- */
+    .boundary {
+      margin-top: 26px;
+      padding: 18px 20px;
+      background: var(--warning-soft);
+      border-left: 8px solid var(--warning);
+      font-size: 16px;
+    }
+    .boundary strong { color: var(--warning); }
+
+    /* --- motion: opt-in only, always with a static fallback --- */
+    .stage {
+      background: var(--stage);
+      color: var(--stage-ink);
+      padding: 24px;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .stage-controls { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+    .stage-controls button {
+      font: inherit;
+      font-weight: 700;
+      padding: 10px 18px;
+      min-height: 44px;
+      border-radius: 6px;
+      border: 2px solid var(--primary);
+      background: var(--surface);
+      color: var(--primary);
+      cursor: pointer;
+    }
+    .stage-controls button[aria-pressed="true"] { background: var(--primary); color: #fff; }
+    /* Motion is opt-in: steps are fully readable by default, so a JS-disabled
+       or reduced-motion reader sees the static final state. Only once the
+       script successfully arms the stage (.stage--armed) do inactive steps
+       dim. Never ship the dimmed state as the CSS default. */
+    .stage-step { opacity: 1; transition: opacity .25s ease; }
+    .stage--armed .stage-step { opacity: .28; }
+    .stage--armed .stage-step.is-active { opacity: 1; }
+
+    /* Respect the user's motion preference: freeze to the static end state. */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+        scroll-behavior: auto !important;
+      }
+      .stage-step,
+      .stage--armed .stage-step { opacity: 1; }
+    }
+
+    @media (max-width: 700px) {
+      .scene { min-height: auto; padding: 48px 18px; }
+      .lead { font-size: 17px; }
+      .visual { min-height: 180px; padding: 18px; }
+      .callout { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <!--
+      Repeat only the 2-5 scenes selected by the content plan.
+      Scene skeleton (copy this shape, do not invent new wrappers).
+      Use plain text where this comment shows SCENE_N / SCENE_HEADLINE etc. —
+      never leave the double-brace placeholder form behind, or the static
+      checker will (correctly) refuse the artifact:
+
+      <section class="scene">
+        <div class="inner">
+          <p class="eyebrow">SCENE_N · SCENE_ROLE</p>
+          <h2>SCENE_HEADLINE</h2>
+          <p class="lead">ONE_SUPPORTING_SENTENCE</p>
+          <div class="visual">
+            ...one dominant visual for this scene...
+          </div>
+        </div>
+      </section>
+
+      The FIRST scene uses <h1> instead of <h2>, and there must be exactly one <h1>.
+    -->
+    {{SCENES}}
+  </main>
+  <!--
+    Scripts are optional. If you add one, it must:
+      - not fetch/WebSocket/EventSource/XMLHttpRequest (offline artifact)
+      - implement real state changes, not decoration
+      - keep a readable static state when JS is disabled
+    Then run: python3 scripts/check_js.py <file>
+  -->
+</body>
+</html>

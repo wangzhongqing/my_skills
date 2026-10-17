@@ -1,0 +1,29 @@
+# macOS
+.DS_Store
+._*
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Test / build artifacts
+*.log
+dist/
+build/
+
+# Local secrets
+.env
+.env.*
+*.local
