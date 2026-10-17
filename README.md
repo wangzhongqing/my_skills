@@ -1,14 +1,36 @@
 # my_skills
 
-个人维护的 AI Agent skills 集合。
+个人维护的 AI Agent skills 与 DSH 插件集合。
 
-每个 skill 是一个独立目录，遵循 `SKILL.md` 约定，可直接复制到 Agent 的 skills 目录使用。
+## 包含的项目
 
-## 包含的 skills
+| 项目 | 类型 | 说明 | 许可证 |
+|---|---|---|---|
+| [eli5-plus-plus](./eli5-plus-plus/) | Agent skill | 把复杂主题解释成自包含、经过三层机械校验的 HTML 图解页 | MIT |
+| [dsh-terminal-locale-font](./dsh-terminal-locale-font/) | DSH 插件 | 修复 DeepSeek Harness 侧栏终端的方块/问号乱码与 `command not found` | MIT |
 
-| Skill | 说明 | 许可证 |
-|---|---|---|
-| [eli5-plus-plus](./eli5-plus-plus/) | 把复杂主题解释成自包含、经过三层机械校验的 HTML 图解页 | MIT |
+## 两类项目的区别
+
+- **Agent skill** —— 一个 `SKILL.md` 加可选资源，复制到 Agent 的 skills 目录即可用
+- **DSH 插件** —— 一个 npm 包，按 DSH 的插件机制装配进 profile，需要重启宿主
+
+## 安装 Agent skill
+
+```bash
+git clone https://github.com/wangzhongqing/my_skills.git
+cp -R my_skills/<skill-name> ~/.agents/skills/
+```
+
+不同 Agent 的 skills 目录位置不同，常见：
+
+- `~/.agents/skills/` — 通用
+- `~/.claude/skills/` — Claude Code
+
+安装后重启或开新任务，让 Agent 重新发现 skills。
+
+## 安装 DSH 插件
+
+见各插件目录下 README 的「安装」章节。DSH 插件需要装配进 profile 并重启宿主。
 
 ## 安装
 
