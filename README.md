@@ -7,7 +7,7 @@
 | 项目 | 类型 | 说明 | 许可证 |
 |---|---|---|---|
 | [eli5-plus-plus](./eli5-plus-plus/) | Agent skill | 把复杂主题解释成自包含、经过三层机械校验的 HTML 图解页 | MIT |
-| [dsh-terminal-locale-font](./dsh-terminal-locale-font/) | DSH 插件 | 修复 DeepSeek Harness 侧栏终端的方块/问号乱码与 `command not found` | MIT |
+| [dsh-terminal-locale-font](./dsh_plugins/dsh-terminal-locale-font/) | DSH 插件 | 修复 DeepSeek Harness 侧栏终端的方块/问号乱码与 `command not found` | MIT |
 
 ## 两类项目的区别
 
@@ -28,14 +28,10 @@ cp -R my_skills/<skill-name> ~/.agents/skills/
 
 安装后重启或开新任务，让 Agent 重新发现 skills。
 
-## 安装 DSH 插件
-
-见各插件目录下 README 的「安装」章节。DSH 插件需要装配进 profile 并重启宿主。
-
-## 安装
+## 安装 Agent skill
 
 ```bash
-git clone https://github.com/<你的用户名>/my_skills.git
+git clone https://github.com/wangzhongqing/my_skills.git
 cp -R my_skills/<skill-name> ~/.agents/skills/
 ```
 
@@ -46,23 +42,37 @@ cp -R my_skills/<skill-name> ~/.agents/skills/
 
 安装后重启或开新任务，让 Agent 重新发现 skills。
 
+## 安装 DSH 插件
+
+见各插件目录下 README 的「安装」章节。DSH 插件需要装配进 profile 并重启宿主。
+
 ## 目录约定
 
 ```
 my_skills/
-├── README.md              # 本文件
+├── README.md                      # 本文件
 ├── .gitignore
-└── <skill-name>/          # 每个 skill 一个目录
-    ├── SKILL.md           # 必需：主指令（含 YAML frontmatter）
-    ├── README.md          # 可选：面向人的说明
-    ├── LICENSE            # 建议：独立许可证
-    ├── agents/            # 可选：客户端元数据
-    ├── assets/            # 可选：模板、图片等产出用素材
-    ├── evals/             # 可选：行为测试用例
-    ├── references/        # 可选：按需加载的参考文档
-    └── scripts/           # 可选：可执行脚本
+│
+├── <skill-name>/                  # Agent skill，每个一个目录
+│   ├── SKILL.md                   # 必需：主指令（含 YAML frontmatter）
+│   ├── README.md                  # 可选：面向人的说明
+│   ├── LICENSE                    # 建议：独立许可证
+│   ├── agents/                    # 可选：客户端元数据
+│   ├── assets/                    # 可选：模板、图片等产出用素材
+│   ├── evals/                     # 可选：行为测试用例
+│   ├── references/                # 可选：按需加载的参考文档
+│   └── scripts/                   # 可选：可执行脚本
+│
+└── dsh_plugins/                   # DSH 插件
+    └── <plugin-name>/
+        ├── package.json           # 必需：npm 包清单 + dsh 字段
+        ├── lib/                   # 插件实现（host / client 入口）
+        ├── test/                  # 测试
+        ├── cordis.patch.yml       # bundle patch
+        ├── dsh.plugin.json        # 插件清单
+        └── dsh-plugin.naming.json # 命名约定清单
 ```
 
 ## 许可证
 
-各 skill 的许可证见其各自目录下的 `LICENSE` 文件。
+各项目的许可证见其各自目录下的 `LICENSE` 文件。
